@@ -12,39 +12,35 @@ import pages.LoginPage;
 import pages.MainPage;
 import pages.TransactionsPage;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
+import static data.Constants.HUB_URL;
+import static data.Constants.LOGIN_PAGE_URL;
 import static io.qameta.allure.Allure.step;
 
 @DisplayName("Тест на проверку транзакций")
-public class LoginTest extends CSVExporter {
+public class LoginTest {
     private WebDriver driver;
     private LoginPage loginPage;
     private MainPage mainPage;
     private TransactionsPage transactionsPage;
-
+    private CSVExporter csvExporter;
     @BeforeEach
     public void setUp() throws MalformedURLException {
-        String hubUrl = "http://192.168.1.148:4444";
 
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-
-        this.driver = new RemoteWebDriver(new URL(hubUrl), capabilities);
-
-        this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        this.driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
 
         this.loginPage = new LoginPage(this.driver);
         this.mainPage = new MainPage(this.driver);
         this.transactionsPage = new TransactionsPage(this.driver);
+        this.csvExporter = new CSVExporter(this.driver);
     }
-
     @Test
-    public void testOpenPage() throws IOException {
+    public void testOpenPage() {
         step("Открываем страницу globalsqa.com", () ->
-                loginPage.openLoginPage("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login"));
+                loginPage.openLoginPage(LOGIN_PAGE_URL));
         step("Выбираем Customer Loger", () ->
                 loginPage.setCustomerLogin());
         step("Заходим пользователем Гарри Поттер", () -> {
@@ -62,15 +58,14 @@ public class LoginTest extends CSVExporter {
         step("Проверяем баланс", () ->
                 mainPage.checkBalance());
         step("Переходим в транзакции", () ->
-                mainPage.setTransactions());
+                mainPage.goToTransactions());
         step("Проверяем наличие операций", () ->
                 transactionsPage.checkTransactions());
         step("Записываем операции в файл", () -> {
             String filePath = "src/main/resources/transactions.csv";
-            CSVExporter.exportTransactionsToCSV(driver, filePath);
+            csvExporter.exportTransactionsToCSV(driver, filePath);
         });
     }
-
     @AfterEach
     public void tearDown() {
         driver.quit();

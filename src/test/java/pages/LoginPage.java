@@ -4,11 +4,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPage {
+    private final By customerLogin = By.xpath("//button[text()='Customer Login']");
+    private final By customerName = By.xpath("//select[@id='userSelect']");
+    private final By granger = By.xpath("//select[@id='userSelect']/option[text()='Hermoine Granger']");
+    private final By potter = By.xpath("//select[@id='userSelect']/option[text()='Harry Potter']");
+    private final By weasly = By.xpath("//select[@id='userSelect']/option[text()='Ron Weasly']");
+    private final By dumbledore = By.xpath("//select[@id='userSelect']/option[text()='Albus Dumbledore']");
+    private final By longbottom = By.xpath("//select[@id='userSelect']/option[text()='Neville Longbottom']");
+    private final By defaultName = By.xpath("//select[@id='userSelect']/option[text()='---Your Name---']");
+    private final By login = By.xpath("//button[text()='Login']");
     private final WebDriver driver;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
+
     public void openLoginPage(String url) {
         driver.get(url);
     }
@@ -35,6 +45,9 @@ public class LoginPage {
             case "Neville Longbottom":
                 driver.findElement(longbottom).click();
                 break;
+            case "default":
+                driver.findElement(defaultName).click();
+                break;
         }
     }
 
@@ -42,12 +55,4 @@ public class LoginPage {
         driver.findElement(login).click();
     }
 
-    private final By customerLogin = By.xpath("//button[text()='Customer Login']");
-    private final By customerName = By.xpath("//select[@id='userSelect']");
-    private final By granger = By.xpath("//select[@id='userSelect']/option[text()='Hermoine Granger']");
-    private final By potter = By.xpath("//select[@id='userSelect']/option[text()='Harry Potter']");
-    private final By weasly = By.xpath("//select[@id='userSelect']/option[text()='Ron Weasly']");
-    private final By dumbledore = By.xpath("//select[@id='userSelect']/option[text()='Albus Dumbledore']");
-    private final By longbottom = By.xpath("//select[@id='userSelect']/option[text()='Neville Longbottom']");
-    private final By login = By.xpath("//button[text()='Login']");
 }

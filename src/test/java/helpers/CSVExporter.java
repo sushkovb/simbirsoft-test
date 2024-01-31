@@ -1,9 +1,9 @@
 package helpers;
 
 import io.qameta.allure.Allure;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import pages.TransactionsPage;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,16 +15,21 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CSVExporter {
-    public static void exportTransactionsToCSV(WebDriver driver, String filePath) throws IOException {
+    private final TransactionsPage transactionsPage;
+
+    public CSVExporter(WebDriver driver) {
+        this.transactionsPage = new TransactionsPage(driver);
+    }
+    public void exportTransactionsToCSV(WebDriver driver, String filePath) throws IOException {
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write("Date-Time,Amount,Transaction Type\n");
 
-            List<WebElement> transactionRows = driver.findElements(By.cssSelector("table.table tbody tr"));
+            List<WebElement> transactionRows = driver.findElements(transactionsPage.transactionRowsLocate);
 
             for (WebElement row : transactionRows) {
-                String dateTime = row.findElement(By.xpath("td[1]")).getText();
-                String amount = row.findElement(By.xpath("td[2]")).getText();
-                String transactionType = row.findElement(By.xpath("td[3]")).getText();
+                String dateTime = row.findElement(transactionsPage.dateTimeLocate).getText();
+                String amount = row.findElement(transactionsPage.amountLocate).getText();
+                String transactionType = row.findElement(transactionsPage.transactionTypeLocate).getText();
 
                 String formattedDateTime = formatDateTime(dateTime);
 
@@ -56,5 +61,4 @@ public class CSVExporter {
             return inputDateTime;
         }
     }
-
 }

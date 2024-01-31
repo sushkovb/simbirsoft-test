@@ -4,16 +4,23 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.time.LocalDate;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MainPage {
+    private final By deposit = By.xpath("//button[@ng-click='deposit()']");
+    private final By withdrawl = By.xpath("//button[@ng-click='withdrawl()']");
+    private final By inputNumberDeposit = By.xpath("//input[@ng-model='amount']");
+    private final By inputNumberWithdrawl = By.xpath("//label[text()='Amount to be Withdrawn :']/following-sibling::input[@ng-model='amount']");
+    private final By submitDeposit = By.xpath("//button[@type='submit' and text()='Deposit']");
+    private final By submitWithdrawl = By.xpath("//button[@type='submit' and text()='Withdraw']");
+    private final By accountInfo = By.xpath("//div[@ng-hide='noAccount']");
+    private final By transaction = By.xpath("//button[@ng-click='transactions()']");
     private final WebDriver driver;
-
     public MainPage(WebDriver driver) {
         this.driver = driver;
     }
+
     public void fillFibonacciNumInDeposit() {
         LocalDate currentDate = LocalDate.now();
         int n = currentDate.getDayOfMonth() + 1;
@@ -51,19 +58,9 @@ public class MainPage {
         assertTrue(accountInfoText.contains("Balance : 0"));
     }
 
-    public void setTransactions() {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    public void goToTransactions() {
         driver.findElement(transaction).click();
-
     }
-    private final By deposit = By.xpath("//button[@ng-click='deposit()']");
-    private final By withdrawl = By.xpath("//button[@ng-click='withdrawl()']");
-    private final By inputNumberDeposit = By.xpath("//input[@ng-model='amount']");
-    private final By inputNumberWithdrawl = By.xpath("//label[text()='Amount to be Withdrawn :']/following-sibling::input[@ng-model='amount']");
-    private final By submitDeposit = By.xpath("//button[@type='submit' and text()='Deposit']");
-    private final By submitWithdrawl = By.xpath("//button[@type='submit' and text()='Withdraw']");
-    private final By accountInfo = By.xpath("//div[@ng-hide='noAccount']");
-    private final By transaction = By.xpath("//button[@ng-click='transactions()']");
 
 }
 
