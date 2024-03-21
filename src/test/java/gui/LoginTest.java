@@ -30,6 +30,7 @@ public class LoginTest {
     public void setUp() throws MalformedURLException {
 
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+
         this.driver = new RemoteWebDriver(new URL(HUB_URL), capabilities);
 
         this.loginPage = new LoginPage(this.driver);
